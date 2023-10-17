@@ -1,0 +1,17 @@
+Queries
+
+1. Display Names all those employees Working in each Location
+2. Find out the Department Name of oldest employee 
+3. Display maximum salary paid in each department name
+4. Display Total Salaries paid in each Locations
+5. Display all those employees who get salaries less than maximum salary paid in Chicago
+6. Find out no. of Employees joined in each month
+7. Display Oldest Employee in each Location
+8. Display Youngest Employee in Month of December
+9. Find out the Month in which more employees were joined
+10. Find out the Year in which more employees were joined
+11. Display the Month of Joining of that employee who has long length name
+12. Display that Location were Less no of employees are working
+13. Display the Month and Department Name in which Maximum employees work
+14. Find out no. of employees who work like SMITH.
+15. Display those employees whose salary lies between avg salary paid in CHICAGO and maximum salary paid in NEW YORK

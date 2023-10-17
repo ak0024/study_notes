@@ -1,0 +1,54 @@
+Write the queries for the following :
+
+1. Display the data from emp table
+2. Display Empno,ename,job and their Salaries 
+3. Display all the employees working in department number 30
+4. Display all the employees working as CLERK from department 30
+5. Display all the MANAGERS from department 20 
+6. Display all Salesman only
+5. Display all the Salesman with their Total Salaries
+6. Display all the employees alongwith their total salaries
+7. Display Annual Salaries for all the employees 
+8. Find out tne employee names and their salaries who work in department 10 and 30
+9.  Who are those Analyst who get salaries in the range of 2000 and 3500
+10. Find out all those employees who get salaries below 1000 and more than 4000
+11. Display all those CLERKS from department 20, give them the commission of 250/- and display their total Salaries
+12. Display all those Salesman in ascending order of their salaries
+13. Display all those Managers only in descending order of their salaries
+14. Display all those Analyst only in descending order of their names
+15. Display all those Salesman only in descending order of their Commission
+16. Display all those Clerks in descending order of their Names
+17. Display all those Presidents
+18. Find out in which department President Works
+19. Display all the data from Department Table
+20. Find out where is department 10 located
+21. Find out what is the department name for department 20
+22. Calculate the tax of each employee.Display Empnames their jobs and salaries along with Tax they pay and display new headings for them
+        (Tax Cal -- 10% of their salaries)
+23. Display Types of jobs
+24. Display Types of Department Numbers
+25. Display types of Manager Numbers
+26. Display only Clerks and Managers
+27. Find out all those employees who are not Clerks
+28. Display all those Clerks who are not from dept.30
+29. Display all those Analyst and Managers from Department 10 and 20
+30. Display Employee Names,their Annual Salaries in descending order of their annual Salaries
+31. Display Employees in ascending order of their names and desc order of their salaries
+32. Display all the employee names and their jobs in Lowercase
+33. Write a query to display the length of enames
+34. Display enames and their jobs without spaces in between
+35. Find out the position of the word 'M' in string 'SPIDER SYSTEMS '
+36. Display only 'SYSTEMS' from the string 'SPIDER SYSTEMS PVT. LTD'
+37. Display the joining dates of all the employees
+38. Display all those employees whose names start with 'M'
+39. Display the joining dates of all those employees whose names start with 'T'
+40. Display Number of days employee has joined
+41. Find out since how many months employee is working from today
+42. Display the data from emp and dept tables
+
+
+
+
+ 
+  
+    

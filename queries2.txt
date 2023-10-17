@@ -1,0 +1,32 @@
+   Write the Queries for the following
+
+1. Display all those clerks and their joining dates who work in department number 20
+2. Display for how many months each employee has joined in department 30
+3. Find out the date on which oldest employee was joined in department 10
+4. Find out for how many months did the oldest employee worked in department 10
+5. Find out for how many months did the youngest employee worked in department 10
+6. Find out for how many days,weeks did the oldest and youngest employee work in       department 20
+7. Display the date on coming Saturday
+8. Display the day on which oldest and youngest employee joined in department 30
+9. Find out the Day joined of all the clerks from department 20
+10. Display those employees who joined in month of December
+11. Display those employees who joined on Monday in Department 10
+12. Display those ANALYST who joined in January
+13. Display the day and month of oldest joined employee 
+14. Find out in which year employee were joined in department 20
+15. Display all those Managers who were not joined in December
+16. Display all those employees who have joined in first quarter
+17. Find out all those employees who have joined in 1982 and 1983
+18. Find out all those employees who have not joined in 1983
+19. Display Lengths of names of all the employees
+20. Find out the maximum no of characters of employee name
+21. Display the name of employees who has maximum length
+22. Display all those employees who have not more than 4 characters name
+23. Display employee names and their department names
+24. Display Employee Numbers,Names,Jobs and their Locations
+25. Who are those employees who work in DALLAS
+26. Who are those employees who donot work in Research Department
+
+
+
+
