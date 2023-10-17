@@ -1,0 +1,346 @@
+drop table challan_details
+/
+
+drop table challan_header
+/
+
+drop table sales_order_details
+/
+
+drop table sales_order
+/
+
+drop table salesman_master
+/
+
+drop table product_master
+/
+drop table client_master
+/
+
+create table Client_master(
+	client_no varchar2(6) check(client_no LIKE 'C%') primary key,
+	name varchar2(20) not null,
+	address1 varchar2(30),
+	address2 varchar2(30),
+	city varchar2(15),
+	state varchar2(15),
+	pincode number(6),
+	bal_due number(10,2)
+) 
+/
+COMMENT ON TABLE client_master
+IS 'Use to store information about client'
+/
+
+
+CREATE TABLE product_master (
+    product_no VARCHAR2(6) CHECK (product_no LIKE 'P%') PRIMARY KEY,
+    description VARCHAR2(50) NOT NULL,
+    profit_percent NUMBER(3,2) NOT NULL,
+    unit_measure VARCHAR2(10) NOT NULL,
+    record_lvl NUMBER(8) NOT NULL,
+    sell_price NUMBER(8,2) NOT NULL CHECK(sell_price != 0),
+    cost_price NUMBER(8,2) NOT NULL CHECK(cost_price != 0)
+)
+/
+COMMENT ON TABLE product_master
+IS 'Use it store information about products.'
+/
+ 
+
+
+CREATE TABLE salesman_master (
+    salesman_no VARCHAR2(6) CHECK (salesman_no LIKE 'S%') PRIMARY KEY,
+    salesman_name varchar2(20) not null,
+    address1 varchar2(30) not null,
+	address2 varchar2(30),
+	city varchar2(20),
+	pincode varchar2(6),
+	state varchar2(20),
+	sal_amt number(8,2) not null check (sal_amt !=0),
+	tgt_to_get number(8,2) not null check (tgt_to_get !=0),
+	ytd_sales number(6,2) not null,
+	remarks varchar2(60)
+)
+/
+COMMENT ON TABLE salesman_master
+IS 'Use to store information about salesman working in the company'
+/
+
+create table sales_order(
+	s_order_no varchar2(6) primary key check(s_order_no like 'O%'),
+	s_order_date date,
+	client_no varchar2(6) references client_master(client_no),
+	dely_addr varchar(25),
+	salesman_no varchar2(6) references salesman_master(salesman_no),
+	dely_type char(1) default 'F' check(dely_type in('P','F')),
+	billed_yn char(1) default 'N' check(billed_yn in ('Y','N')),
+	dely_date date,
+	order_status varchar2(10) check (order_status in ('IP','F','B','C')),
+	constraint sal check (s_order_date<=dely_date)
+)
+/
+
+COMMENT ON TABLE sales_order
+IS 'Use to store information about order'
+/
+
+create table sales_order_details(
+	s_order_no varchar2(6) references sales_order(s_order_no),
+	product_no varchar2(6) references product_master(product_no),
+	qty_ordered number(8),
+	qty_disp number(8),
+	product_rate number(10,2)
+)
+/
+COMMENT ON TABLE sales_order_details
+IS 'Use to store information about products ordered.'
+/
+
+create table challan_header(
+	challan_no varchar2(6) primary key check (challan_no like 'CH%'),
+	s_order_no varchar2(6) references sales_order(s_order_no),
+	challan_date date,
+	billed_yn char default 'N' check (billed_yn in ('Y','N'))
+)
+/
+COMMENT ON TABLE challan_header
+IS 'Use to store information about challans made for the orders.'
+/
+
+create table challan_details(
+	challan_no varchar2(6) references challan_header(challan_no),
+	product_no varchar2(6) references product_master(product_no),
+	qty_disp number(4,2) not null
+)
+/
+
+COMMENT ON TABLE challan_header
+IS 'use to store information about challan details.'
+/
+
+INSERT ALL
+INTO client_master (Client_No,Name,City,PinCode,State,Bal_Due) VALUES ('C00001', 'Ivan Bayross', 'Bombay' ,400054 ,'Maharashtra', 15000)
+INTO client_master (Client_No,Name,City,PinCode,State,Bal_Due) VALUES ('C00002', 'Vandana Saitwal', 'Madras' ,780001,'Tamil Nadu', 0)
+INTO client_master (Client_No,Name,City,PinCode,State,Bal_Due) VALUES ('C00003', 'Pramada Jaguste', 'Bombay' ,400057,'Maharashtra', 5000)
+INTO client_master (Client_No,Name,City,PinCode,State,Bal_Due) VALUES ('C00004', 'Basu Navindgi', 'Bombay' ,400056,'Maharashtra', 0)
+INTO client_master (Client_No,Name,City,PinCode,State,Bal_Due) VALUES ('C00005', 'Ravi Sreedharan', 'Delhi' ,100001,'Delhi', 2000)
+INTO client_master (Client_No,Name,City,PinCode,State,Bal_Due) VALUES ('C00006', 'Rukmini', 'Bombay' ,400050,'Maharashtra', 0)
+SELECT 1 FROM DUAL
+/
+
+alter table product_master add (qty_on_hand number(6))
+/
+
+INSERT ALL
+INTO Product_master (product_no,description,profit_percent,unit_measure,qty_on_hand,record_lvl,sell_price,cost_price) values ('P00001', '1.44 Floppies', 5, 'Piece' ,100, 20, 525, 500)
+INTO Product_master (product_no,description,profit_percent,unit_measure,qty_on_hand,record_lvl,sell_price,cost_price) values ('P03453' ,'Monitors', 6, 'Piece' ,10, 3, 12000 ,11280)
+INTO Product_master (product_no,description,profit_percent,unit_measure,qty_on_hand,record_lvl,sell_price,cost_price) values ('P06734', 'Mouse', 5, 'Piece', 20, 5, 1050, 1000)
+INTO Product_master (product_no,description,profit_percent,unit_measure,qty_on_hand,record_lvl,sell_price,cost_price) values ('P07865' ,'1.22 Floppies', 5, 'Piece' ,100, 20, 525, 500)
+INTO Product_master (product_no,description,profit_percent,unit_measure,qty_on_hand,record_lvl,sell_price,cost_price) values ('P07868' ,'Keyboards' ,2 ,'Piece' ,10, 3, 3150, 3050)
+INTO Product_master (product_no,description,profit_percent,unit_measure,qty_on_hand,record_lvl,sell_price,cost_price) values ('P07885' ,'CD Drive', 2.5, 'Piece' ,10, 3, 5250, 5100)
+INTO Product_master (product_no,description,profit_percent,unit_measure,qty_on_hand,record_lvl,sell_price,cost_price) values ('P07965', '540 HDD' ,4,'Piece' ,10, 3, 8400, 8000)
+INTO Product_master (product_no,description,profit_percent,unit_measure,qty_on_hand,record_lvl,sell_price,cost_price) values ('P07975', '1.44 Drive', 5 ,'Piece' ,10, 3, 1050, 1000)
+INTO Product_master (product_no,description,profit_percent,unit_measure,qty_on_hand,record_lvl,sell_price,cost_price) values ('P08865', '1.22 Drive' ,5 ,'Piece' ,2 ,3 ,1050, 1000)
+SELECT 1 FROM DUAL
+/	
+
+INSERT ALL
+INTO salesman_master (salesman_no,salesman_name,address1,address2,city,pincode,state,sal_amt,tgt_to_get,ytd_sales,remarks) values ('S00001' ,'Kiran', 'A/14', 'Worli', 'Bombay', 400002, 'MAH' ,3000, 100, 50, 'Good')
+INTO salesman_master (salesman_no,salesman_name,address1,address2,city,pincode,state,sal_amt,tgt_to_get,ytd_sales,remarks) values ('S00002', 'Manish', '65', 'Nariman', 'Bombay' ,400001, 'MAH' ,3000, 200, 100, 'Good')
+INTO salesman_master (salesman_no,salesman_name,address1,address2,city,pincode,state,sal_amt,tgt_to_get,ytd_sales,remarks) values ('S00003' ,'Ravi' ,'P-7' ,'Bandra' ,'Bombay', 400032, 'MAH' ,3000, 200, 100, 'Good')
+INTO salesman_master (salesman_no,salesman_name,address1,address2,city,pincode,state,sal_amt,tgt_to_get,ytd_sales,remarks) values ('S00004', 'Ashish', 'A/5', 'Juhu', 'Bombay', 400044, 'MAH' ,3500, 200 ,150, 'Good')
+SELECT 1 FROM DUAL
+/	
+
+INSERT ALL
+INTO sales_order (s_order_no,s_order_date,client_no,dely_type,billed_yn,salesman_no,dely_date,order_status) values ('O19001', to_date('12-Jan-1996','DD-MON-YYYY'),  'C00001','F','N' ,'S00001', to_date('20-Jan-1996','DD-MON-YYYY'), 'IP')
+INTO sales_order (s_order_no,s_order_date,client_no,dely_type,billed_yn,salesman_no,dely_date,order_status) values ('O19002', to_date('25-Jan-1996','DD-MON-YYYY'), 'C00002' ,'P', 'N', 'S00002' ,to_date('27-Jan-1996','DD-MON-YYYY'), 'C')
+INTO sales_order (s_order_no,s_order_date,client_no,dely_type,billed_yn,salesman_no,dely_date,order_status) values ('O46865', to_date('18-Feb-1996','DD-MON-YYYY'), 'C00003', 'F' ,'Y', 'S00003', to_date('20-Feb-1996','DD-MON-YYYY'), 'F')
+INTO sales_order (s_order_no,s_order_date,client_no,dely_type,billed_yn,salesman_no,dely_date,order_status) values ('O19003', to_date('03-Apr-1996','DD-MON-YYYY'), 'C00001', 'F' ,'Y', 'S00001', to_date('07-Apr-1996','DD-MON-YYYY'), 'F')
+INTO sales_order (s_order_no,s_order_date,client_no,dely_type,billed_yn,salesman_no,dely_date,order_status) values ('O46866', to_date('20-May-1996','DD-MON-YYYY'), 'C00004' ,'P', 'N', 'S00002', to_date('22-May-1996','DD-MON-YYYY'), 'C')
+INTO sales_order (s_order_no,s_order_date,client_no,dely_type,billed_yn,salesman_no,dely_date,order_status) values ('O10008', to_date('24-May-1996','DD-MON-YYYY'), 'C00005', 'F', 'N','S00004', to_date('26-May-1996','DD-MON-YYYY'), 'IP')
+SELECT 1 FROM DUAL
+/
+
+/* ---------------------------------------------------------------- */
+/* --------------INSERT SALES ORDER DETAILS------------------------ */
+
+
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O19001','P00001',4,4,525)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O19001','P07965',2,1,8400)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O19001','P07885',2,1,5250)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O19002','P00001',10,0,525)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O46865','P07868',3,3,3150)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O46865','P07885',3,1,5250)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O46865','P00001',10,10,525)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O46865','P03453',4,4,1050)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O19003','P03453',2,2,1050)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O19003','P06734',1,1,12000)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O46866','P07965',1,0,8400)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O46866','P07975',1,0,1050)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O10008','P00001',10,5,525)
+/
+INSERT INTO sales_order_details(s_order_no,product_no,qty_ordered,qty_disp,product_rate) 
+            VALUES('O10008','P07975',5,3,1050)
+/
+
+
+/* ---------------------------------------------------------------- */
+/* --------------INSERT CHALLAN HEADER----------------------------- */
+
+
+INSERT INTO Challan_Header(challan_no,s_order_no,challan_date,billed_yn)
+        VALUES('CH9001','O19001',TO_DATE('12-Dec-1995','DD-Mon-YYYY'),'Y')
+/
+INSERT INTO Challan_Header(challan_no,s_order_no,challan_date,billed_yn)
+        VALUES('CH6865','O46865',TO_DATE('12-Nov-1995','DD-Mon-YYYY'),'Y')
+/
+INSERT INTO Challan_Header(challan_no,s_order_no,challan_date,billed_yn)
+        VALUES('CH3965','O10008',TO_DATE('12-Oct-1995','DD-Mon-YYYY'),'Y')
+/
+
+/*---------------------------INSERT CHALAN DETAILS-------------------*/
+
+insert into challan_details
+(challan_no,product_no,qty_disp)
+VALUES
+('CH9001','P00001',4)
+/
+
+insert into challan_details
+(challan_no,product_no,qty_disp)
+VALUES
+('CH9001','P07965',1)
+/
+
+insert into challan_details
+(challan_no,product_no,qty_disp)
+VALUES
+('CH9001','P07885',1)
+/
+
+insert into challan_details
+(challan_no,product_no,qty_disp)
+VALUES
+('CH6865','P07868',3)
+/
+
+insert into challan_details
+(challan_no,product_no,qty_disp)
+VALUES
+('CH6865','P03453',4)
+/
+
+insert into challan_details
+(challan_no,product_no,qty_disp)
+VALUES
+('CH6865','P00001',10)
+/
+
+insert into challan_details
+(challan_no,product_no,qty_disp)
+VALUES
+('CH3965','P00001',5)
+/
+
+insert into challan_details
+(challan_no,product_no,qty_disp)
+VALUES
+('CH3965','P07975',2)
+/
+
+
+/*-----------------------------QUERIES--------------------------*/
+
+SELECT * FROM CLIENT_MASTER
+/
+------4
+--36
+
+select product_no,description from product_master 
+    where product_no not in
+    (select distinct product_no from sales_order_details)
+/
+
+--37
+
+select name,address1,address2,city,pincode from client_master 
+where client_no in (select client_no from sales_order where s_order_no='O19001')
+/
+
+--38
+
+select name from client_master where client_no in (select client_no from sales_order
+    where dely_date<to_date('01-May-1996','dd-Mon-yyyy'))
+/
+
+--39
+select client_no,name from client_master where client_no in (
+select client_no from sales_order where s_order_no in( 
+(select s_order_no from sales_order_details where product_no in
+(select product_no from product_master where description ='1.44 Drive'))))
+/
+
+--40  
+select name as Order_more_than_10000 from client_master where client_no in(
+    select client_no from sales_order where s_order_no in (
+    select s_order_no from sales_order_details  group by s_order_no having sum(qty_ordered*product_rate)>10000))
+/
+
+-------5
+--41
+SELECT s_order_no,TO_CHAR(s_order_date, 'DAY') AS day_name
+FROM sales_order
+/
+
+--42
+SELECT TO_CHAR(dely_date, 'MONTH-DD') AS Delivery_format
+FROM sales_order
+    /
+--43
+select to_char(s_order_date,'DD-MONTH-YYYY') as ordered_format from Sales_order
+    /
+--44
+
+SELECT SYSDATE + 15 AS date_after_15_days FROM DUAL
+/
+
+-------6
+--46
+update sales_order 
+set s_order_date = to_date('24/07/1996','dd/mm/yyyy')
+where client_no='C00001'
+/
+select * from sales_order
+/
+
+--47
+
+
